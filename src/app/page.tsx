@@ -10,10 +10,19 @@ declare global {
   }
 }
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export default function Home() {
   const mouseAreaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "visited_homepage", {
+        traffic_source: "organic",
+        user_type: "guest",
+      });
+    }
+  }, []);
 
   // Example event handlers for tracking
   const handleButtonClick = () => {
