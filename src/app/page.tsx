@@ -2,9 +2,14 @@
 
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void;
+    gtag?: (
+      command: "event",
+      eventName: string,
+      params?: Record<string, string | number | boolean>
+    ) => void;
   }
 }
+
 import { useRef } from "react";
 
 export default function Home() {
