@@ -1,97 +1,65 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
-
 declare global {
   interface Window {
     gtag?: (
-      command: "config" | "event" | "set",
-      id: string,
+      command: "event",
+      eventName: string,
       params?: Record<string, string | number | boolean>
     ) => void;
   }
 }
 
-export default function HomePage() {
-  const { data: session } = useSession();
-  const userId = session?.user?.id;
+import { useEffect, useRef } from "react";
+
+export default function Home() {
   const mouseAreaRef = useRef<HTMLDivElement>(null);
 
-  // 🔹 Track logged-in user ID in GA4
   useEffect(() => {
-    if (userId && typeof window !== "undefined" && window.gtag) {
-      window.gtag("config", "G-TV7JCEY4DV", {
-        user_id: userId,
-      });
-
-      window.gtag("event", "logged_in", {
-        method: "google",
-        membership: "guest",
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "visited_homepage", {
+        traffic_source: "organic",
+        user_type: "guest",
       });
     }
-  }, [userId]);
+  }, []);
 
-  // 🔹 Custom event handlers
+  // Example event handlers for tracking
   const handleButtonClick = () => {
-    window.gtag?.("event", "button_click", {
-      label: "Trackable Button",
-    });
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "button_click", { label: "Trackable Button" });
+    }
   };
 
   const handleLinkClick = () => {
-    window.gtag?.("event", "link_click", {
-      label: "Trackable Link",
-    });
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "link_click", { label: "Trackable Link" });
+    }
   };
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    window.gtag?.("event", "form_submit", {
-      label: "Trackable Form",
-    });
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "form_submit", { label: "Trackable Form" });
+    }
     alert("Form submitted!");
   };
 
   const handleMouseMove = () => {
-    window.gtag?.("event", "mouse_move", {
-      label: "Mouse Area",
-    });
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "mouse_move", { label: "Mouse Area" });
+    }
   };
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen gap-8 p-8">
-      <h1 className="text-3xl font-bold">Trackable Elements Demo</h1>
-
-      {/* 🔘 Google Auth Buttons */}
-      {session ? (
-        <>
-          <p>Hello, {session.user?.name}</p>
-          <button
-            onClick={() => signOut()}
-            className="px-4 py-2 bg-red-500 text-white rounded"
-          >
-            Sign Out
-          </button>
-        </>
-      ) : (
-        <button
-          onClick={() => signIn("google")}
-          className="px-4 py-2 bg-green-600 text-white rounded"
-        >
-          Sign in with Google
-        </button>
-      )}
-
-      {/* 🟦 Trackable Button */}
+      <h1 className="text-3xl font-bold mb-4">Trackable Elements Demo</h1>
       <button
         className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
         onClick={handleButtonClick}
       >
         Trackable Button
       </button>
-
-      {/* 🔗 Trackable Link */}
       <a
         href="https://www.example.com"
         target="_blank"
@@ -101,8 +69,6 @@ export default function HomePage() {
       >
         Trackable Link
       </a>
-
-      {/* 📩 Trackable Form */}
       <form className="flex flex-col gap-2 w-64" onSubmit={handleFormSubmit}>
         <label htmlFor="email">Email (Trackable Form):</label>
         <input
@@ -119,8 +85,6 @@ export default function HomePage() {
           Submit
         </button>
       </form>
-
-      {/* 🖱️ Mouse Movement Tracker */}
       <div
         ref={mouseAreaRef}
         onMouseMove={handleMouseMove}

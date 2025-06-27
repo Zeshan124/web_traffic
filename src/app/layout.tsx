@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Script from "next/script";
-import SessionProviderWrapper from "./SessionProviderWrapper";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -34,9 +33,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased">
-        <SessionProviderWrapper>{children}</SessionProviderWrapper>
-      </body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
