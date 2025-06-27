@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Script from "next/script";
+import SessionProviderWrapper from "./SessionProviderWrapper";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +19,7 @@ export default function RootLayout({
         {/* Google Analytics Script */}
         <Script
           strategy="afterInteractive"
-           src="https://www.googletagmanager.com/gtag/js?id=G-TV7JCEY4DV"
+          src="https://www.googletagmanager.com/gtag/js?id=G-TV7JCEY4DV"
         />
         <Script
           id="gtag-init"
@@ -33,7 +34,9 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <SessionProviderWrapper>{children}</SessionProviderWrapper>
+      </body>
     </html>
   );
 }
