@@ -4,7 +4,7 @@ import Image from "next/image";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import styles from "../../page.module.css";
+
 
 const SignUp = () => {
   const { data: session, status } = useSession();
