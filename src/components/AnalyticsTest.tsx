@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { trackEvent } from "@/utils/analytics";
+import { trackEvent, type AnalyticsSession } from "@/utils/analytics";
 
 export default function AnalyticsTest() {
   const { data: session } = useSession();
@@ -14,7 +14,7 @@ export default function AnalyticsTest() {
         timestamp: new Date().toISOString(),
         user_agent: navigator.userAgent,
       },
-      session as any
+      session
     );
 
     alert(
@@ -33,7 +33,7 @@ export default function AnalyticsTest() {
           <>
             <p>
               <strong>User ID:</strong>{" "}
-              {(session as any).user?.id || session.user?.email}
+              {session.user?.id || session.user?.email}
             </p>
             <p>
               <strong>Email:</strong> {session.user?.email}

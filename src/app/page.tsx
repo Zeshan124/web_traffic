@@ -22,10 +22,10 @@ export default function Home() {
     if (typeof window !== "undefined" && window.gtag) {
       window.gtag("event", "visited_homepage", {
         traffic_source: "organic",
-        user_type: "guest",
+        user_type: session ? "authenticated" : "guest",
       });
     }
-  }, []);
+  }, [session]);
 
   // Example event handlers for tracking
   const handleButtonClick = () => {

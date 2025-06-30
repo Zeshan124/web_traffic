@@ -2,7 +2,7 @@
 
 import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
-import { trackEvent } from "@/utils/analytics";
+import { trackEvent, type AnalyticsSession } from "@/utils/analytics";
 
 interface NavigationProps {
   onSignIn?: () => void;

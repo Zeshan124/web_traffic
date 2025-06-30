@@ -6,6 +6,7 @@ import {
   trackEvent,
   setUserProperties,
   trackPageView,
+  type AnalyticsSession
 } from "@/utils/analytics";
 
 export default function AnalyticsTracker() {
@@ -15,10 +16,10 @@ export default function AnalyticsTracker() {
     if (status === "loading") return;
 
     // Set user properties when session changes
-    setUserProperties(session as any);
+    setUserProperties(session);
 
     // Track page view with user data
-    trackPageView(session as any);
+    trackPageView(session);
 
     // Track homepage visit
     trackEvent(
@@ -27,7 +28,7 @@ export default function AnalyticsTracker() {
         traffic_source: "organic",
         page_title: "Homepage",
       },
-      session as any
+      session
     );
   }, [session, status]);
 

@@ -49,7 +49,7 @@ export interface AuthCallbacks {
     account: Account | null;
     profile?: Profile;
     email?: { verificationRequest?: boolean };
-    credentials?: Record<string, any>;
+    credentials?: Record<string, unknown>;
   };
 }
 
