@@ -13,18 +13,26 @@ export default function Navigation({ onSignIn, onSignOut }: NavigationProps) {
   const { data: session, status } = useSession();
 
   const handleSignIn = () => {
-    trackEvent("sign_in_attempt", {
-      method: "google",
-      source: "navigation",
-    }, session);
+    trackEvent(
+      "sign_in_attempt",
+      {
+        method: "google",
+        source: "navigation",
+      },
+      session as any
+    );
     onSignIn?.();
     signIn("google");
   };
 
   const handleSignOut = () => {
-    trackEvent("sign_out", {
-      session_duration: "tracked_in_analytics",
-    }, session);
+    trackEvent(
+      "sign_out",
+      {
+        session_duration: "tracked_in_analytics",
+      },
+      session as any
+    );
     onSignOut?.();
     signOut();
   };
