@@ -1,6 +1,7 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import { v4 as uuidv4 } from "uuid";
+import type { AuthCallbacks, AuthEvents } from "@/types/next-auth";
 
 const handler = NextAuth({
   providers: [
@@ -13,7 +14,7 @@ const handler = NextAuth({
     signIn: "/auth/signin",
   },
   callbacks: {
-    async session({ session, token }: any) {
+    async session({ session, token }: AuthCallbacks["session"]) {
       if (token && session.user) {
         const userEmail = token.email || "";
         const userId = userEmail
@@ -29,7 +30,7 @@ const handler = NextAuth({
       }
       return session;
     },
-    async jwt({ token, user, account }: any) {
+    async jwt({ token, user, account }: AuthCallbacks["jwt"]) {
       if (account && user) {
         token.sub = user.id;
         token.email = user.email || undefined;
@@ -39,7 +40,7 @@ const handler = NextAuth({
       }
       return token;
     },
-    async signIn({ user, account }: any) {
+    async signIn({ user, account }: AuthCallbacks["signIn"]) {
       console.log("User signed in:", {
         userId: user.id,
         email: user.email,
@@ -50,7 +51,7 @@ const handler = NextAuth({
     },
   },
   events: {
-    async signIn({ user, account, isNewUser }: any) {
+    async signIn({ user, account, isNewUser }: AuthEvents["signIn"]) {
       console.log("Sign in event:", {
         userId: user.id,
         email: user.email,
@@ -58,7 +59,7 @@ const handler = NextAuth({
         provider: account?.provider,
       });
     },
-    async signOut({ session, token }: any) {
+    async signOut({ session, token }: AuthEvents["signOut"]) {
       console.log("Sign out event:", {
         userId: session?.user?.id || token?.sub,
       });

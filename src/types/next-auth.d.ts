@@ -1,3 +1,5 @@
+import { Account, Profile } from "next-auth";
+
 declare module "next-auth" {
   interface Session {
     user: {
@@ -27,4 +29,39 @@ declare module "next-auth/jwt" {
     picture?: string;
     loginTime?: string;
   }
+}
+
+export interface AuthCallbacks {
+  session: {
+    session: Session;
+    token: JWT;
+    user: User;
+  };
+  jwt: {
+    token: JWT;
+    user: User;
+    account: Account | null;
+    profile?: Profile;
+    trigger?: "signIn" | "signUp" | "update";
+  };
+  signIn: {
+    user: User;
+    account: Account | null;
+    profile?: Profile;
+    email?: { verificationRequest?: boolean };
+    credentials?: Record<string, any>;
+  };
+}
+
+export interface AuthEvents {
+  signIn: {
+    user: User;
+    account: Account | null;
+    profile?: Profile;
+    isNewUser?: boolean;
+  };
+  signOut: {
+    session: Session;
+    token: JWT;
+  };
 }

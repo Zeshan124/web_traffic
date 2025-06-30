@@ -19,7 +19,9 @@ export interface UserAnalyticsData {
   session_id?: string;
 }
 
-export const generateOrGetUserId = (session?: Session | null): string => {
+export type AnalyticsSession = Session | null | undefined;
+
+export const generateOrGetUserId = (session?: AnalyticsSession): string => {
   if (session?.user?.email) {
     return `auth_${session.user.email.replace(/[^a-zA-Z0-9]/g, "_")}`;
   } else {
@@ -60,7 +62,7 @@ export const identifyUser = (session: Session) => {
   console.log("User identified:", userId, session.user);
 };
 
-export const trackUserLogout = (session?: Session | null) => {
+export const trackUserLogout = (session?: AnalyticsSession) => {
   if (typeof window === "undefined" || !window.gtag) {
     return;
   }
@@ -84,7 +86,7 @@ export const trackUserLogout = (session?: Session | null) => {
 export const trackEvent = (
   eventName: string,
   parameters: Record<string, string | number | boolean | undefined> = {},
-  session?: Session | null
+  session?: AnalyticsSession
 ) => {
   if (typeof window === "undefined" || !window.gtag) {
     return;
@@ -109,7 +111,7 @@ export const trackEvent = (
   window.gtag("event", eventName, enhancedParams);
 };
 
-export const setUserProperties = (session?: Session | null) => {
+export const setUserProperties = (session?: AnalyticsSession) => {
   if (typeof window === "undefined" || !window.gtag) {
     return;
   }
@@ -131,7 +133,7 @@ export const setUserProperties = (session?: Session | null) => {
   }
 };
 
-export const trackPageView = (session?: Session | null, pageTitle?: string) => {
+export const trackPageView = (session?: AnalyticsSession, pageTitle?: string) => {
   if (typeof window === "undefined" || !window.gtag) {
     return;
   }
