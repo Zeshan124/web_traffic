@@ -101,6 +101,9 @@ export const trackEvent = (
     userData.user_email = session.user.email || undefined;
     userData.user_name = session.user.name || undefined;
     userData.session_id = session.user.id;
+    if (session.user.googleId) {
+      (userData as any).google_id = session.user.googleId;
+    }
   }
 
   const enhancedParams = {
@@ -122,6 +125,7 @@ export const setUserProperties = (session?: AnalyticsSession) => {
       user_email: session.user.email || undefined,
       user_name: session.user.name || undefined,
       user_type: "authenticated",
+      google_id: session.user.googleId || undefined,
     });
   } else {
     window.gtag("config", "G-TV7JCEY4DV", {
@@ -133,7 +137,10 @@ export const setUserProperties = (session?: AnalyticsSession) => {
   }
 };
 
-export const trackPageView = (session?: AnalyticsSession, pageTitle?: string) => {
+export const trackPageView = (
+  session?: AnalyticsSession,
+  pageTitle?: string
+) => {
   if (typeof window === "undefined" || !window.gtag) {
     return;
   }
